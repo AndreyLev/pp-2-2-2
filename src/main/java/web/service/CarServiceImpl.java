@@ -5,7 +5,9 @@ import org.springframework.stereotype.Service;
 import web.model.Car;
 import web.repository.CarRepository;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Service(value = "carService")
 public class CarServiceImpl implements CarService {
@@ -17,8 +19,18 @@ public class CarServiceImpl implements CarService {
     }
     
     @Override
-    public List<Car> getCars(Integer count) {
-        return count == null || count >= repository.count() ? repository.getAllCars()
-                                                            : repository.getCars(count);
+    public List<Car> getCars(Optional<Integer> count) {
+        int countValue;
+        if (count.isEmpty() ||
+                (countValue = count.get()) >= repository.count())
+        {
+            return repository.getAllCars();
+        }
+        
+        if (countValue < 0) {
+            return Collections.EMPTY_LIST;
+        }
+        
+        return repository.getCars(countValue);
     }
 }
