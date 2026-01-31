@@ -27,7 +27,7 @@ public class CarServiceImpl implements CarService {
             return repository.getAllCars();
         }
         
-        if (countValue < 0) {
+        if (countValue <= 0) {
             return Collections.EMPTY_LIST;
         }
         
